@@ -13,7 +13,7 @@ const testSchema = joi
   .object()
   .unknown()
   .keys({
-    url: joi.string().required(),
+    url: joi.string(),
     dir: joi.string(),
     filter: joi.array().items(joi.string()),
     threshold: joi

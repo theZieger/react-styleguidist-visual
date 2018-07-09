@@ -17,8 +17,7 @@ function testArgs (yargs) {
   yargs
     .option('url', {
       describe: 'URL to screenshot',
-      type: 'string',
-      requiresArg: true
+      type: 'string'
     })
     .option('dir', {
       type: 'string',

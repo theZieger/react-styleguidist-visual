@@ -3,8 +3,8 @@ const fs = require('fs-extra')
 const path = require('path')
 const chalk = require('chalk')
 const { debug } = require('./debug')
-
 const ensureDir = promisify(fs.ensureDir)
+const appDirectory = process.cwd()
 
 async function getPreviews (page, { url, filter, viewport, navigationOptions }) {
   await goToUrl(page, url, navigationOptions)
@@ -138,8 +138,20 @@ async function resetMouseAndFocus (page) {
   await page.mouse.move(0, 0)
 }
 
+let styleguideDir = './styleguide'
 async function goToUrl (page, url, navigationOptions) {
+  // no protocol given? try to resolve to file:// protocol
+  if (url) {
+    if (!~url.indexOf('://')) {
+      url = 'file://' + path.resolve(appDirectory, url)
+    }
+  } else {
+    // nothing given? use styleguidist.config.js or fallback to './styleguide/index.html'
+    url = 'file://' + path.resolve(appDirectory, styleguideDir + '/index.html')
+  }
+
   debug('Navigating to URL %s', chalk.blue(url))
+
   return page.goto(url, navigationOptions)
 }
 
